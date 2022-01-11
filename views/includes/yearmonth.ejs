@@ -1,0 +1,56 @@
+    
+    <div class="container">
+      <div class="row mx-auto">
+        <h1 class=" mb-5">Select Year & Month Period</h1><br><br>
+        </div>
+      <div class="d-flex justify-content-center">
+
+          <div class="row mx-auto">
+          <div class="col yearMonthSelect">
+            <!-- YEAR/MONTH SELECT -->
+            <form class="row gx-3 gy-2 mb-5" action="<%=path %>" method="POST">
+              <div class="col-auto text-center">
+                <label class="" for="year"
+                  >Year</label
+                >
+                <select class="form-select" name="year" id="year">
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option selected value="2022">2022</option>
+                </select>
+              </div>
+              <div class="col-auto text-center">
+                <label class="" for="month"
+                  >Month</label
+                >
+                <select class="form-select" name="month" id="month">
+                  <option selected value="jan">January</option>
+                  <option value="feb">February</option>
+                  <option value="mar">March</option>
+                  <option value="apr">April</option>
+                  <option value="may">May</option>
+                  <option value="jun">June</option>
+                  <option value="jul">July</option>
+                  <option value="aug">August</option>
+                  <option value="sep">September</option>
+                  <option value="oct">October</option>
+                  <option value="nov">November</option>
+                  <option value="dec">December</option>
+                </select>
+              </div>
+
+              <div class="col-auto">
+                <button
+                  type="submit"
+                  class="btn btn-primary submitButtonMargin"
+                >
+                  Change Year/Month Period
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

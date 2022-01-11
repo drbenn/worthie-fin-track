@@ -1,0 +1,28 @@
+{
+  "name": "worthie-fin-tracker",
+  "version": "1.0.0",
+  "description": "financial tracker with node and sql",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Dan Bennett",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drbenn/worthie-fin-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drbenn/worthie-fin-tracker/issues"
+  },
+  "homepage": "https://github.com/drbenn/worthie-fin-tracker#readme"
+}
