@@ -45,7 +45,7 @@ exports.getBalancesheet = (req, res, next) => {
       res.render("balancesheet", {
         trans: rows,
         pageTitle: "BalanceSheet",
-        path: "/balancesheet",
+        path: "/worthie/balancesheet",
         bsAssetTotal: totalAssetArray,
         bsLiabilityTotal: totalLiabilityArray,
         bsNetWorthTotal: bsNetWorth,
@@ -79,7 +79,7 @@ exports.postBalancesheetTransaction = (req, res, next) => {
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
-        res.redirect("/balancesheet");
+        res.redirect("/worthie/balancesheet");
       }
       setTimeout(delayAfterDelete, 500);
     })
@@ -126,7 +126,7 @@ exports.postDeleteBalancesheet = (req, res, next) => {
 
   // Slight delay to allow database to update before data being retrieved again for page reload
   function delayAfterDelete() {
-    res.redirect("/balancesheet");
+    res.redirect("/worthie/balancesheet");
   }
   setTimeout(delayAfterDelete, 500);
 };

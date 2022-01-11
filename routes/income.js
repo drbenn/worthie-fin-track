@@ -5,7 +5,7 @@ const app = express();
 const incomeController = require("../controllers/income");
 
 // /income => GET
-router.get("/income", incomeController.getIncome);
+router.get("/worthie/income", incomeController.getIncome);
 
 // /income => POST NEW TRANSACTION
 router.post("/income", incomeController.postIncomeTransaction);

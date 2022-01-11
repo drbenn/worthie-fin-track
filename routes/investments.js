@@ -5,7 +5,7 @@ const app = express();
 const investmentsController = require("../controllers/investments");
 
 // /investments => GET
-router.get("/investments", investmentsController.getInvestments);
+router.get("/worthie/investments", investmentsController.getInvestments);
 
 // /investments => POST NEW TRANSACTION
 router.post("/investments", investmentsController.postInvestmentsTransaction);

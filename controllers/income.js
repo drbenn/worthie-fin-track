@@ -35,7 +35,7 @@ exports.getIncome = (req, res, next) => {
       res.render("income", {
         trans: rows,
         pageTitle: "Income",
-        path: "/income",
+        path: "/worthie/income",
         incomeTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
@@ -67,7 +67,7 @@ exports.postIncomeTransaction = (req, res, next) => {
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
-        res.redirect("/income");
+        res.redirect("/worthie/income");
       }
       setTimeout(delayAfterDelete, 500);
     })
@@ -114,7 +114,7 @@ exports.postDeleteIncome = (req, res, next) => {
 
   // Slight delay to allow database to update before data being retrieved again for page reload
   function delayAfterDelete() {
-    res.redirect("/income");
+    res.redirect("/worthie/income");
   }
   setTimeout(delayAfterDelete, 500);
 };

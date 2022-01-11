@@ -6,7 +6,7 @@ const rootDir = require("../util/path");
 
 const router = express.Router();
 
-router.get("/instructions", (req, res, next) => {
+router.get("/worthie/instructions", (req, res, next) => {
   //   res.sendFile(path.join(rootDir, "views", "investments.html"));
   res.render("instructions", {
     pageTitle: "Instructions",

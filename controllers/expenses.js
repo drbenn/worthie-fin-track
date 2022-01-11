@@ -35,7 +35,7 @@ exports.getExpenses = (req, res, next) => {
       res.render("expenses", {
         trans: rows,
         pageTitle: "Expenses",
-        path: "/expenses",
+        path: "/worthie/expenses",
         expenseTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
@@ -67,7 +67,7 @@ exports.postExpenseTransaction = (req, res, next) => {
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
-        res.redirect("/expenses");
+        res.redirect("/worthie/expenses");
       }
       setTimeout(delayAfterDelete, 500);
     })
@@ -111,7 +111,7 @@ exports.postDeleteExpense = (req, res, next) => {
   // SQL Command to delete from SQL table
   db.execute(
     `DELETE FROM transactions WHERE ${user} = user_id AND 'expense' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategoryExp} = category AND ${deleteRowDescriptionExp} = description AND ${deleteRowAmountExp} = amount`
-  ).then(res.redirect("/expenses"));
+  ).then(res.redirect("/worthie/expenses"));
 
   // // Slight delay to allow database to update before data being retrieved again for page reload
   // function delayAfterDelete() {

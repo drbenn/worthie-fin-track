@@ -31,5 +31,5 @@ exports.postYearMonth = (req, res, next) => {
   yearMonth[0] = req.body.year;
   yearMonth[1] = req.body.month;
   // console.log(`New YearMonth var : ${yearMonth}`);
-  res.redirect("/");
+  res.redirect("/worthie/");
 };

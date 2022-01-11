@@ -35,7 +35,7 @@ exports.getInvestments = (req, res, next) => {
       res.render("investments", {
         trans: rows,
         pageTitle: "Investments",
-        path: "/investments",
+        path: "/worthie/investments",
         investmentsTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
@@ -67,7 +67,7 @@ exports.postInvestmentsTransaction = (req, res, next) => {
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
-        res.redirect("/investments");
+        res.redirect("/worthie/investments");
       }
       setTimeout(delayAfterDelete, 500);
     })
@@ -113,7 +113,7 @@ exports.postDeleteInvestments = (req, res, next) => {
   );
   // Slight delay to allow database to update before data being retrieved again for page reload
   function delayAfterDelete() {
-    res.redirect("/investments");
+    res.redirect("/worthie/investments");
   }
   setTimeout(delayAfterDelete, 500);
 };

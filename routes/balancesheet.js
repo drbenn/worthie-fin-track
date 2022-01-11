@@ -5,7 +5,7 @@ const app = express();
 const balancesheetController = require("../controllers/balancesheet");
 
 // /balancesheet => GET
-router.get("/balancesheet", balancesheetController.getBalancesheet);
+router.get("/worthie/balancesheet", balancesheetController.getBalancesheet);
 
 // /balancesheet => POST NEW TRANSACTION
 router.post(

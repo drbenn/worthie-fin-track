@@ -1,12 +1,6 @@
 <header class="header">
   <nav
-    class="
-      py-4
-      navbar navbar-expand-lg navbar-light
-      bg-light
-      navbar-style
-      ms-auto
-    "
+    class="py-4 navbar navbar-expand-lg navbar-light bg-light navbar-style ms-auto"
   >
     <div class="container-fluid">
       <a class="navbar-brand ml-2" href="#">Worthie</a>
@@ -23,141 +17,57 @@
       </button>
       <div class="collapse navbar-collapse mt-4" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto text-right">
-          <a class="nav-link" href="/"
+          <a class="nav-link" href="/worthie/"
             ><button
-              class="
-                btn btn-outline-warning btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/yearmonth'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-warning btn-lg me-2 <%= path === '/yearmonth' ? 'active' : '' %>"
               type="button"
             >
               Year/Month
             </button></a
           >
-          <a class="nav-link" href="/dash"
+          <a class="nav-link" href="/worthie/dash"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/' ? 'active' : '' %>"
               type="button"
             >
               Dashboard
             </button></a
           >
-          <a class="nav-link" href="/expenses"
+          <a class="nav-link" href="/worthie/expenses"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/expenses'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/expenses' ? 'active' : '' %>"
               type="button"
             >
               Expenses
             </button></a
           >
-          <a class="nav-link" href="/income"
+          <a class="nav-link" href="/worthie/income"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/income'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/income' ? 'active' : '' %>"
               type="button"
             >
               Income
             </button></a
           >
-          <a class="nav-link" href="/investments"
+          <a class="nav-link" href="/worthie/investments"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/investments'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/investments' ? 'active' : '' %>"
               type="button"
             >
               Investments
             </button></a
           >
-          <a class="nav-link" href="balancesheet"
+          <a class="nav-link" href="/worthie/balancesheet"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/balancesheet'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/balancesheet' ? 'active' : '' %>"
               type="button"
             >
               Balance Sheet
             </button></a
           >
-          <a class="nav-link" href="instructions"
+          <a class="nav-link" href="/worthie/instructions"
             ><button
-              class="
-                btn btn-outline-success btn-lg
-                me-2
-                <%=
-                path
-                ===
-                '/instructions'
-                ?
-                'active'
-                :
-                ''
-                %>
-              "
+              class="btn btn-outline-success btn-lg me-2 <%= path === '/instructions' ? 'active' : '' %>"
               type="button"
             >
               Instructions
