@@ -35,7 +35,7 @@ exports.getInvestments = (req, res, next) => {
       res.render("investments", {
         trans: rows,
         pageTitle: "Investments",
-        path: "/worthie/investments",
+        path: "/investments",
         investmentsTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),

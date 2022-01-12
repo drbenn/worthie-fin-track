@@ -35,7 +35,7 @@ exports.getIncome = (req, res, next) => {
       res.render("income", {
         trans: rows,
         pageTitle: "Income",
-        path: "/worthie/income",
+        path: "/income",
         incomeTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),

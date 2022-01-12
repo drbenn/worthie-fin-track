@@ -1,42 +1,35 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
 }
-/* .header {
-  height: 30vh;
-} */
+
 
 body {
   justify-content: center;
-}
-.header {
+/* } */
+/* .header {
   margin-bottom: 5rem;
-}
-
-.section-title {
-  margin-bottom: 3rem;
-}
-
-/* .navbar-style {
-  box-shadow: 0 5px 5px #f0f0f0;
-  margin-bottom: 2rem;
 } */
 
-.navbar-brand {
+/* .section-title {
+  margin-bottom: 3rem;
+} */
+
+/* .navbar-brand {
   font-size: 3rem !important;
   color: rgba(24, 207, 24, 0.568) !important;
   font-weight: 700 !important;
   text-shadow: 2px 2px rgba(63, 8, 82, 0.61) !important;
-}
+} */
 
-.app-container {
+/* .app-container {
   height: 100vh;
   width: 100%;
-}
-.complete {
+} */
+/* .complete {
   text-decoration: line-through;
-}
+} */
 
-.submitButtonMargin {
+/* .submitButtonMargin {
   margin-top: 2rem;
-}
+} */

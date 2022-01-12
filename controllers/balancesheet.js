@@ -45,7 +45,7 @@ exports.getBalancesheet = (req, res, next) => {
       res.render("balancesheet", {
         trans: rows,
         pageTitle: "BalanceSheet",
-        path: "/worthie/balancesheet",
+        path: "/balancesheet",
         bsAssetTotal: totalAssetArray,
         bsLiabilityTotal: totalLiabilityArray,
         bsNetWorthTotal: bsNetWorth,

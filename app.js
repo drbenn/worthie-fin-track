@@ -25,9 +25,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(yearMonthRoutes.routes);
 app.use(expensesData.routes);
+app.use(balancesheetData.routes);
 app.use(incomeData.routes);
 app.use(investmentsData.routes);
-app.use(balancesheetData.routes);
+
 app.use(instructionsRoutes);
 app.use(dashData.routes);
 

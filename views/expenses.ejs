@@ -11,15 +11,15 @@
       <div class="d-flex justify-content-center">
         <div class="row mx-auto">
           <h1 class="mb-4"><%=pageTitle %></h1>
-          <h5 class="mb-4 text-info"><%=activeMonth %> <%=activeYear %></h5>
+          <h5 class="mt-2 mb-4 text-info"><%=activeMonth %> <%=activeYear %></h5>
 
 
             <!-- Expense Transaction Input -->
-            <div class="container text-center">
+            <div class="mt-3 container text-center">
                 <div class="row mx-auto">
                   <div class="col expenseTransaction">
 
-            <form class="bg-light rounded row gx-3 gy-2 pb-4 mb-4" action="/expenses" method="POST">
+            <form class="bg-light rounded row gx-3 gy-2 pb-4 mb-4" action="/worthie/expenses" method="POST">
 
 
                 <div class="col-sm-2">
@@ -76,9 +76,10 @@
                   />
                 </div>
               <div class="col-auto">
+                <h5 class="text-light">submit</h5>
                 <button
                   type="submit"
-                  class="btn btn-primary submitButtonMargin"
+                  class="btn btn-primary"
                 >
                   Add Transaction
                 </button>
@@ -120,7 +121,7 @@
                         <td class="text-dark" ><%=transaction.description %></td>
                         <td class="text-dark" ><%=transaction.amount %></td>
                         <td class="text-dark" >
-                          <form action="/delete-expense" method="POST">
+                          <form action="/worthie/delete-expense" method="POST">
                             <!-- name is to name the key of the object -->
                             <input type="hidden" value="<%=transaction.date %>" name="deleteRowDateFormExp">
                             <input type="hidden" value="<%=transaction.category %>" name="deleteRowCategoryFormExp">

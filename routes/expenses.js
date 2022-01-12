@@ -8,9 +8,9 @@ const expensesController = require("../controllers/expenses");
 router.get("/worthie/expenses", expensesController.getExpenses);
 
 // /expenses => POST NEW TRANSACTION
-router.post("/expenses", expensesController.postExpenseTransaction);
+router.post("/worthie/expenses", expensesController.postExpenseTransaction);
 
 // /expenses => POST DELETE TRANSACTION
-router.post("/delete-expense", expensesController.postDeleteExpense);
+router.post("/worthie/delete-expense", expensesController.postDeleteExpense);
 
 exports.routes = router;

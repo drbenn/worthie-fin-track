@@ -8,10 +8,10 @@
           <div class="row mx-auto">
           <div class="col yearMonthSelect">
             <!-- YEAR/MONTH SELECT -->
-            <form class="row gx-3 gy-2 mb-5" action="<%=path %>" method="POST">
+            <form class="row gx-3 gy-2 mb-5" action="/worthie/update-year" method="POST">
               <div class="col-auto text-center">
                 <label class="" for="year"
-                  >Year</label
+                  >Year <%path %></label
                 >
                 <select class="form-select" name="year" id="year">
                   <option value="2020">2020</option>
@@ -40,9 +40,10 @@
               </div>
 
               <div class="col-auto">
+                <h5 class="text-white">submit</h5>
                 <button
                   type="submit"
-                  class="btn btn-primary submitButtonMargin"
+                  class="btn btn-primary"
                 >
                   Change Year/Month Period
                 </button>

@@ -8,9 +8,15 @@ const investmentsController = require("../controllers/investments");
 router.get("/worthie/investments", investmentsController.getInvestments);
 
 // /investments => POST NEW TRANSACTION
-router.post("/investments", investmentsController.postInvestmentsTransaction);
+router.post(
+  "/worthie/investments",
+  investmentsController.postInvestmentsTransaction
+);
 
 // /investments => POST DELETE TRANSACTION
-router.post("/delete-investments", investmentsController.postDeleteInvestments);
+router.post(
+  "/worthie/delete-investments",
+  investmentsController.postDeleteInvestments
+);
 
 exports.routes = router;

@@ -8,9 +8,9 @@ const incomeController = require("../controllers/income");
 router.get("/worthie/income", incomeController.getIncome);
 
 // /income => POST NEW TRANSACTION
-router.post("/income", incomeController.postIncomeTransaction);
+router.post("/worthie/income", incomeController.postIncomeTransaction);
 
 // /income => POST DELETE TRANSACTION
-router.post("/delete-income", incomeController.postDeleteIncome);
+router.post("/worthie/delete-income", incomeController.postDeleteIncome);
 
 exports.routes = router;
