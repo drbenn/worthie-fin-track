@@ -1,6 +1,9 @@
 const db = require("../util/database");
 const Income = require("../models/income");
 
+const defaultYear = Number(yearMonth[0]);
+const defaultMonth = yearMonth[1];
+
 const incomeTransaction = [];
 const monthsObjForDelete = {
   Jan: "01",
@@ -19,7 +22,29 @@ const monthsObjForDelete = {
 
 // getIncome From SQL Table
 exports.getIncome = (req, res, next) => {
-  Income.fetchAll()
+  // console.log(`session id : ${req.session.id}`);
+  // console.log(`from request ${req.get("Cookie").split("=")[2].slice(0, 4)}`);
+  // console.log(`from request ${req.get("Cookie").split("=")[3].slice(0, 3)}`);
+  let cookieYear = undefined;
+  let cookieMonth = undefined;
+  let cookieUser = undefined;
+
+  cookieYear =
+    cookieYear !== "undefined"
+      ? (cookieYear = req.get("Cookie").split("=")[3].slice(0, 4))
+      : (cookieYear = defaultYear);
+
+  cookieMonth =
+    cookieMonth !== "undefined"
+      ? (cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3))
+      : (cookieMonth = defaultMonth);
+
+  cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+  // console.log(`cookie year in income: ${cookieYear}`);
+  // console.log(`cookie month in income: ${cookieMonth}`);
+  // console.log(`cookie user in income: ${cookieUser}`);
+
+  Income.fetchAll(cookieUser, cookieYear, cookieMonth)
     .then(([rows, FieldData]) => {
       const amountArray = [];
       for (let row of rows) {
@@ -39,11 +64,9 @@ exports.getIncome = (req, res, next) => {
         incomeTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
-        // hasTransactions: transactions.length > 0,
-        // date: null,
-        // category: null,
-        // description: null,
-        // amount: null,
+        // activeMonth: yearMonth[1].toUpperCase(),
+        // activeYear: Number(yearMonth[0]),
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -62,8 +85,9 @@ exports.postIncomeTransaction = (req, res, next) => {
     incomeTransaction[2],
     incomeTransaction[3]
   );
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
   newIncome
-    .save()
+    .save(cookieUser)
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
@@ -77,6 +101,10 @@ exports.postIncomeTransaction = (req, res, next) => {
 //  POST/Removal of transaction line via Delete button
 exports.postDeleteIncome = (req, res, next) => {
   // Retrieve form data from row and place in variables
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+  const cookieYear = req.get("Cookie").split("=")[3].slice(0, 4);
+  const cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3);
+
   const deleteRowDate = JSON.stringify(req.body.deleteRowDateForm);
   const deleteRowCategory = JSON.stringify(req.body.deleteRowCategoryForm);
   const deleteRowDescription = JSON.stringify(
@@ -100,17 +128,22 @@ exports.postDeleteIncome = (req, res, next) => {
   // Other (including Global yearMonth) variables to include in SQL DELETE Command
   const activeYear = Number(yearMonth[0]);
   const activeMonth = yearMonth[1];
-  const user = Number(1);
 
   // ConsoleLog of full SQL command
   // console.log(
   //   `DELETE FROM income WHERE ${user} = user_id AND 'income' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowDateForSqlString} = date AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
   // );
 
-  // SQL Command to delete from SQL table
-  db.execute(
-    `DELETE FROM transactions WHERE ${user} = user_id AND 'income' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
-  );
+  if (cookieYear === undefined) {
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'income' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
+    );
+  } else {
+    console.log("Year/Month cookies recognized for delete");
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'income' = trans_type AND '${cookieYear}' = year AND '${cookieMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
+    );
+  }
 
   // Slight delay to allow database to update before data being retrieved again for page reload
   function delayAfterDelete() {

@@ -1,5 +1,9 @@
 const db = require("../util/database");
 const Investment = require("../models/investments");
+// GOOD BEFORE HERE
+
+const defaultYear = Number(yearMonth[0]);
+const defaultMonth = yearMonth[1];
 
 const investmentsTransaction = [];
 const monthsObjForDelete = {
@@ -19,7 +23,23 @@ const monthsObjForDelete = {
 
 // getInvestments From SQL Table
 exports.getInvestments = (req, res, next) => {
-  Investment.fetchAll()
+  let cookieYear = undefined;
+  let cookieMonth = undefined;
+  let cookieUser = undefined;
+
+  cookieYear =
+    cookieYear !== "undefined"
+      ? (cookieYear = req.get("Cookie").split("=")[3].slice(0, 4))
+      : (cookieYear = defaultYear);
+
+  cookieMonth =
+    cookieMonth !== "undefined"
+      ? (cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3))
+      : (cookieMonth = defaultMonth);
+
+  cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+
+  Investment.fetchAll(cookieUser, cookieYear, cookieMonth)
     .then(([rows, FieldData]) => {
       const amountArray = [];
       for (let row of rows) {
@@ -39,6 +59,7 @@ exports.getInvestments = (req, res, next) => {
         investmentsTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
+        isAuthenticated: req.isLoggedIn,
         // hasTransactions: transactions.length > 0,
         // date: null,
         // category: null,
@@ -62,8 +83,9 @@ exports.postInvestmentsTransaction = (req, res, next) => {
     investmentsTransaction[2],
     investmentsTransaction[3]
   );
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
   newInvestment
-    .save()
+    .save(cookieUser)
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
@@ -77,6 +99,10 @@ exports.postInvestmentsTransaction = (req, res, next) => {
 //  POST/Removal of transaction line via Delete button
 exports.postDeleteInvestments = (req, res, next) => {
   // Retrieve form data from row and place in variables
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+  const cookieYear = req.get("Cookie").split("=")[3].slice(0, 4);
+  const cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3);
+
   const deleteRowDate = JSON.stringify(req.body.deleteRowDateForm);
   const deleteRowCategory = JSON.stringify(req.body.deleteRowCategoryForm);
   const deleteRowDescription = JSON.stringify(
@@ -100,7 +126,7 @@ exports.postDeleteInvestments = (req, res, next) => {
   // Other (including Global yearMonth) variables to include in SQL DELETE Command
   const activeYear = Number(yearMonth[0]);
   const activeMonth = yearMonth[1];
-  const user = Number(1);
+  // const user = Number(1);
 
   // ConsoleLog of full SQL command
   // console.log(
@@ -108,9 +134,17 @@ exports.postDeleteInvestments = (req, res, next) => {
   // );
 
   // SQL Command to delete from SQL table
-  db.execute(
-    `DELETE FROM transactions WHERE ${user} = user_id AND 'investment' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
-  );
+
+  if (cookieYear === undefined) {
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'investment' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
+    );
+  } else {
+    console.log("Year/Month cookies recognized for delete");
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'investment' = trans_type AND '${cookieYear}' = year AND '${cookieMonth}' = month AND ${deleteRowCategory} = category AND ${deleteRowDescription} = description AND ${deleteRowAmount} = amount`
+    );
+  }
   // Slight delay to allow database to update before data being retrieved again for page reload
   function delayAfterDelete() {
     res.redirect("/worthie/investments");

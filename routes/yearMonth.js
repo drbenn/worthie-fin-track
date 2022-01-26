@@ -9,12 +9,7 @@ const router = express.Router();
 const yearMonthController = require("../controllers/yearmonth");
 
 // GET
-router.get("/worthie", (req, res, next) => {
-  res.render("yearmonth", {
-    pageTitle: "Year & Month Select",
-    path: "/yearmonth",
-  });
-});
+router.get("/worthie/yearmonth", yearMonthController.getYearMonth);
 
 // /yearmonth => POST
 router.post("/worthie/update-year", yearMonthController.postYearMonth);

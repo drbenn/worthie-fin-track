@@ -2,6 +2,9 @@ const db = require("../util/database");
 const activeYear = Number(yearMonth[0]);
 const activeMonth = yearMonth[1];
 
+const defaultYear = Number(yearMonth[0]);
+const defaultMonth = yearMonth[1];
+
 // Dashboard Object Class
 module.exports = class Dash {
   constructor() {
@@ -21,16 +24,24 @@ module.exports = class Dash {
     this.amount = amount;
   }
   // Fetch data from SQL Database
-  static fetchAll() {
+  static fetchAll(cookieUser, cookieYear, cookieMonth) {
     const activeYear = Number(yearMonth[0]);
     const activeMonth = yearMonth[1];
     // console.log(`activeYear: ${activeYear}`);
     // console.log(`activeMonth: ${activeMonth}`);
 
     // `SELECT amount, category, year,month,trans_type FROM income, expenses, investments, balancesheet WHERE '${activeMonth}' = month AND '${activeYear}' = year`
-    const dashQuery = db.execute(
-      `SELECT * FROM transactions WHERE '${activeMonth}' = month AND '${activeYear}' = year ORDER BY date DESC`
-    );
-    return dashQuery;
+    if (cookieYear === undefined) {
+      const dashQuery = db.execute(
+        `SELECT * FROM transactions WHERE '${cookieUser}' = user_id AND '${defaultMonth}' = month AND '${defaultYear}' = year ORDER BY date DESC`
+      );
+      return dashQuery;
+    } else {
+      console.log("Year/Month cookies recognized");
+      const dashQuery = db.execute(
+        `SELECT * FROM transactions WHERE '${cookieUser}' = user_id AND '${cookieMonth}' = month AND '${cookieYear}' = year ORDER BY date DESC`
+      );
+      return dashQuery;
+    }
   }
 };

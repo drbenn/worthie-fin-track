@@ -21,6 +21,15 @@ const MONTHS = [
 const currentMonth = MONTHS[currentMonthIndex];
 global.yearMonth = [currentYear, currentMonth];
 
+exports.getYearMonth = (req, res, next) => {
+  res.render("yearmonth", {
+    pageTitle: "Year & Month Select",
+    path: "/yearmonth",
+    activeMonth: yearMonth[1].toUpperCase(),
+    activeYear: Number(yearMonth[0]),
+  });
+};
+
 exports.postYearMonth = (req, res, next) => {
   // req.body is provided by express but it does not also parse
 
@@ -30,6 +39,15 @@ exports.postYearMonth = (req, res, next) => {
   // console.log(`Before changeYearMonth var : ${yearMonth}`);
   yearMonth[0] = req.body.year;
   yearMonth[1] = req.body.month;
+  const selectedYear = yearMonth[0].slice(0, 4);
+  const selectedMonth = yearMonth[1];
+  console.log(`selected month: ${selectedMonth}`);
+  console.log(`selected year: ${selectedYear}`);
+
   // console.log(`New YearMonth var : ${yearMonth}`);
-  res.redirect("/worthie");
+  // res.setHeader("Set-Cookie", `activeYear=${selectedYear}`);
+  // res.setHeader("Set-Cookie", `activeMonth=${selectedMonth}`);
+  res.cookie(`activeYear`, `${selectedYear}`);
+  res.cookie(`activeMonth`, `${selectedMonth}`);
+  res.redirect("/worthie/yearmonth");
 };

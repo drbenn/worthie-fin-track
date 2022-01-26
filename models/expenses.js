@@ -15,43 +15,38 @@ const monthsObjForSubmit = {
   12: "dec",
 };
 
-// Expense Transaction Object Class
+// const defaultYear = Number(yearMonth[0]);
+// const defaultMonth = yearMonth[1];
+
 module.exports = class Expense {
-  constructor(
-    // userid,
-    // trans_type,
-    // year,
-    // month,
-    trans_id,
-    date,
-    category,
-    description,
-    amount
-  ) {
-    // this.userid = userid;
-    // this.trans_type = trans_type;
-    // this.year = year;
-    // this.month = month;
+  constructor(trans_id, date, category, description, amount) {
     this.trans_id = trans_id;
     this.date = date;
     this.category = category;
     this.description = description;
     this.amount = amount;
   }
-  // Fetch data from SQL Database
-  static fetchAll() {
+
+  static fetchAll(cookieUser, cookieYear, cookieMonth) {
     const activeYear = Number(yearMonth[0]);
     const activeMonth = yearMonth[1];
     // console.log(`activeYear: ${activeYear}`);
     // console.log(`activeMonth: ${activeMonth}`);
-    const expenseQuery = db.execute(
-      `SELECT * FROM transactions WHERE '${activeMonth}' = month AND '${activeYear}' = year AND "expense" = trans_type ORDER BY date DESC`
-    );
-    return expenseQuery;
+    if (cookieYear === undefined) {
+      const expenseQuery = db.execute(
+        `SELECT * FROM transactions WHERE '${cookieUser}' = user_id AND  '${defaultMonth}' = month AND '${defaultYear}' = year AND "expense" = trans_type ORDER BY date DESC`
+      );
+      return expenseQuery;
+    } else {
+      const expenseQuery = db.execute(
+        `SELECT * FROM transactions WHERE '${cookieUser}' = user_id AND  '${cookieMonth}' = month AND '${cookieYear}' = year AND "expense" = trans_type ORDER BY date DESC`
+      );
+      return expenseQuery;
+    }
   }
   // Save and submit new transaction to SQL database table
-  save() {
-    const user = Number(1);
+  save(cookieUser) {
+    // const user = Number(1);
     const rawDateString = this.date.toString();
 
     const submittedMonth = rawDateString.slice(0, 2);
@@ -65,7 +60,7 @@ module.exports = class Expense {
     return db.execute(
       `INSERT INTO transactions (user_id, trans_type, year, month, date, category, description, amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        user,
+        cookieUser,
         "expense",
         submittedYear,
         submittedMonthSql,

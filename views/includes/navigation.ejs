@@ -1,6 +1,42 @@
 <header class="header mb-5">
+  <nav class="navbar py-0 navbar-expand bg-secondary">
+    <div class="container-fluid">
+      <div class="navbar-nav">
+        <a
+          href="https://danbennett.dev"
+          class="h5 pl-4 ml-1 mt-1 nav-item nav-link active text-light"
+          >danbennett.dev</a
+        >
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a
+          href="/worthie/instructions"
+          class="pr-4 nav-item nav-link text-light"
+          >Instructions</a
+        >
+
+        <a href="/worthie" class="pl-1 pr-4 nav-item nav-link text-light"
+          >Login</a
+        >
+        <form action="/worthie/logout" method="POST">
+          <button
+            type="submit"
+            class="ml-0 mr-3 mt-1 text-light border-0 btn btn-secondary"
+          >
+            Logout
+          </button>
+        </form>
+
+        <a
+          href="/worthie/register"
+          class="pl-1 pr-4 nav-item nav-link text-light"
+          >Register</a
+        >
+      </div>
+    </div>
+  </nav>
   <nav
-    class="py-4 navbar navbar-expand-lg navbar-light bg-light navbar-style ms-auto"
+    class="py-3 navbar navbar-expand-lg navbar-light bg-light navbar-style ms-auto"
   >
     <div class="container-fluid">
       <div
@@ -20,9 +56,10 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse mt-4" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto text-right">
-          <a class="nav-link" href="/worthie"
+          <a class="nav-link" href="/worthie/yearmonth"
             ><button
               class="btn btn-outline-warning btn-lg me-2 <%= path === '/yearmonth' ? 'active' : '' %>"
               type="button"
@@ -70,14 +107,15 @@
               Balance Sheet
             </button></a
           >
-          <a class="nav-link" href="/worthie/instructions"
+
+          <!-- <a class="nav-link" href="/worthie/instructions"
             ><button
               class="btn btn-outline-success btn-lg me-2 <%= path === '/instructions' ? 'active' : '' %>"
               type="button"
             >
               Instructions
             </button></a
-          >
+          > -->
         </div>
       </div>
     </div>

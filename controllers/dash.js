@@ -1,5 +1,9 @@
 const db = require("../util/database");
 const Dash = require("../models/dash");
+// GOOD BEFORE HERE
+
+const defaultYear = Number(yearMonth[0]);
+const defaultMonth = yearMonth[1];
 
 var formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -12,7 +16,23 @@ var formatter = new Intl.NumberFormat("en-US", {
 
 // getDashboard From SQL Table
 exports.getDash = (req, res, next) => {
-  Dash.fetchAll()
+  let cookieYear = undefined;
+  let cookieMonth = undefined;
+  let cookieUser = undefined;
+
+  cookieYear =
+    cookieYear !== "undefined"
+      ? (cookieYear = req.get("Cookie").split("=")[3].slice(0, 4))
+      : (cookieYear = defaultYear);
+
+  cookieMonth =
+    cookieMonth !== "undefined"
+      ? (cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3))
+      : (cookieMonth = defaultMonth);
+
+  cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+
+  Dash.fetchAll(cookieUser, cookieYear, cookieMonth)
     .then(([rows, FieldData]) => {
       const assetArray = [];
       const liabilityArray = [];
@@ -78,12 +98,32 @@ exports.getDash = (req, res, next) => {
       const totalIncomeValueDecimal = totalIncomeValue.toFixed(2);
       const totalIncomeValueFormat = formatter.format(totalIncomeValueDecimal);
 
+      // Savings Values
+      const totalSavingsValueDecimal =
+        totalIncomeValueDecimal - totalExpenseValueDecimal;
+      const totalSavingsValueFormat = formatter.format(
+        totalSavingsValueDecimal
+      );
+
       // Investment Values
       const totalInvestValue = investArray.reduce(function (a, b) {
         return a + b;
       }, 0);
       const totalInvestValueDecimal = totalInvestValue.toFixed(2);
       const totalInvestValueFormat = formatter.format(totalInvestValueDecimal);
+
+      // Chart Data
+      const cashFlowChartData = [
+        totalIncomeValueFormat,
+        totalExpenseValueFormat,
+        totalSavingsValueFormat,
+      ];
+      const netWorthChartData = [
+        totalAssetValueFormat,
+        totalLiabiltiyValueFormat,
+        totalInvestValueFormat,
+        netWorthValueFormat,
+      ];
 
       // console.log(`total asset value: ${totalAssetValueDecimal}`);
       // console.log(`total liab value: ${totalLiabilityValueDecimal}`);
@@ -112,9 +152,13 @@ exports.getDash = (req, res, next) => {
         bsNetWorthTotal: netWorthValueFormat,
         expenseTotal: totalExpenseValueFormat,
         incomeTotal: totalIncomeValueFormat,
+        savingsTotal: totalSavingsValueFormat,
         investTotal: totalInvestValueFormat,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
+        isAuthenticated: req.isLoggedIn,
+        cashFlowChartData: cashFlowChartData,
+        netWorthChartData: netWorthChartData,
         // hasTransactions: transactions.length > 0,
         // date: null,
         // category: null,

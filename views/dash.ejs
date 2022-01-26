@@ -1,5 +1,5 @@
 <%- include('includes/head.ejs') %>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <%- include('includes/navigation.ejs') %>
@@ -9,10 +9,135 @@
         <div class="d-flex justify-content-center">
           <div class="row mx-auto">
             <h1 class="mb-4"><%=pageTitle %></h1>
-            <h5 class="mt-2 mb-5 text-info"><%=activeMonth %> <%=activeYear %></h5>
+            <h5 class="mt-2 mb-5 text-info">For the Month of <%=activeMonth %> <%=activeYear %></h5>
+          </div>
+        </div>
+    </div>
 
 
-    <div class="bg-light container border border-light rounded">
+
+
+    
+
+    <div class="container text-center">
+      <div class="justify-content-center">
+        <div class="row mx-auto">
+
+            <div class="w-50 bg-light container border border-secondary rounded text-center pt-2 pb-4 mb-4">
+              <div class="mt-4 h5 text-dark text-center">
+                <%=activeMonth %> <%=activeYear %>  Cash Flow Summary
+              </div>
+              <div class="row mt-4">
+                <div class="col text-dark mt-5">
+                  <div class="row mt-3">
+                  <div class="col text-end">
+                    Total-Income:
+                  </div>
+                  <div class="col text-start">
+                    <%=incomeTotal %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col text-end">
+                    Total Expenses:
+                  </div>
+                  <div class="col text-start">
+                    <%=expenseTotal %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col text-end">
+                    Total Savings:
+                  </div>
+                  <div class="col text-start">
+                    <%=savingsTotal %>
+                  </div>
+                </div>
+   
+                </div>
+                <div class="col text-center text-dark">
+                      <!-- Cash Flow Chart Area -->
+                      <canvas id="cashFlowChart" width="100" height="100"></canvas>
+
+
+                  </div>
+
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+
+
+              <div class="container text-center">
+                <div class="justify-content-center">
+                  <div class="row mx-auto">
+                      <div class="w-50 bg-light container border border-secondary rounded text-center pt-2 pb-4 mb-4">
+                        <div class="mt-4 h5 text-dark text-center">
+                          <%=activeMonth %> <%=activeYear %> Net Worth Snapshot
+                        </div>
+
+
+
+
+                        <div class="row mt-4">
+
+                          <div class="col text-center text-dark">
+                            <!-- Net Worth Chart Area -->
+                            <canvas id="netWorthChart" width="200" height="200"></canvas>
+                            </div>
+
+
+
+
+
+                          <div class="col text-dark mt-5">
+                            <div class="row">
+                            <div class="col text-end">
+                              Assets:
+                            </div>
+                            <div class="col text-start">
+                              <%=bsAssetTotal %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col text-end">
+                              Liabilities:
+                            </div>
+                            <div class="col text-start">
+                              <%=bsLiabilityTotal %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col text-end">
+                              Investments:
+                            </div>
+                            <div class="col text-start">
+                              <%=investTotal %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col text-end">
+                              Net Worth:
+                            </div>
+                            <div class="col text-start">
+                              <%=bsNetWorthTotal %>
+                            </div>
+                          </div>
+             
+                          </div>
+
+                          </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+ <!-- OG BELOW -->
+ <!-- <div class="container text-center">
+  <div class="d-flex justify-content-center">
+    <div class="row mx-auto">
+    <div class="bg-light container border border-secondary rounded">
         <div class="row mt-4">
           <div class="col h5 text-end text-dark">
             Total Income:
@@ -30,13 +155,14 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col h5 text-end text-dark">
-                Total Investments:
-            </div>
-            <div class="col h5 text-start text-dark">
-              <%=investTotal %>
-            </div>
-        </div>
+          <div class="col h5 text-end text-dark">
+            Total Savings:
+          </div>
+          <div class="col h5 text-start text-dark">
+            <%=savingsTotal %>
+          </div>
+      </div>
+
         <div class="row mt-3">
           <div class="col h5 text-end text-dark">
               Assets:
@@ -45,6 +171,14 @@
             <%=bsAssetTotal %>
           </div>
       </div>
+      <div class="row mt-3">
+        <div class="col h5 text-end text-dark">
+            Total Investments:
+        </div>
+        <div class="col h5 text-start text-dark">
+          <%=investTotal %>
+        </div>
+    </div>
       <div class="row mt-3">
         <div class="col h5 text-end text-dark">
             Liabilities:
@@ -61,8 +195,100 @@
               <%=bsNetWorthTotal %>
             </div>
         </div>
-
+      </div>
     </div>
+  </div>
+</div> -->
+
+
+<!-- Script for Client Side CDN Charts.js -->
+<script>
+
+// Cash Flow Chart
+const cfChart = document.getElementById('cashFlowChart').getContext('2d');
+  let cashFlowChartData = `<%=cashFlowChartData %>`;
+  let cashFlowChartIncome = Number(cashFlowChartData.split(".")[0].slice(1).replace(',',''));
+  let cashFlowChartExpense = Number(cashFlowChartData.split(".")[1].slice(4).replace(',',''));
+  let cashFlowChartSavings = Number(cashFlowChartData.split(".")[2].slice(4).replace(',',''));
+  const myCashChart = new Chart(cfChart, {
+      type: 'pie',
+      data: {
+          labels: ['Income', 'Expenses', 'Savings'],
+          datasets: [{
+              label: '$ Dollars',
+              data: [cashFlowChartIncome, cashFlowChartExpense, cashFlowChartSavings],
+              backgroundColor: [
+
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+
+              ],
+              borderColor: [
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+
+              ],
+              borderWidth: 3
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+
+
+// Net Worth Chart
+  const nwChart = document.getElementById('netWorthChart').getContext('2d');
+  let netWorthChartData = `<%=netWorthChartData %>`;
+  let netWorthChartAsset = Number(netWorthChartData.split(".")[0].slice(1).replace(',',''));
+  let netWorthChartLiability = Number(netWorthChartData.split(".")[1].slice(4).replace(',',''));
+  let netWorthChartInvestment = Number(netWorthChartData.split(".")[2].slice(4).replace(',',''));
+  let netWorthChartNetWorth = Number(netWorthChartData.split(".")[3].slice(4).replace(',',''));
+  const myNetChart = new Chart(nwChart, {
+      type: 'bar',
+      data: {
+          labels: ['Assets', 'Liabilites', 'Investments', 'Net Worth'],
+          datasets: [{
+              label: '$ Dollars',
+              data: [netWorthChartAsset, netWorthChartLiability, netWorthChartInvestment, netWorthChartNetWorth],
+              backgroundColor: [
+
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+
+              ],
+              borderColor: [
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+
+              ],
+              borderWidth: 3
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+  </script>
+
+  
+
 
 </body>
 

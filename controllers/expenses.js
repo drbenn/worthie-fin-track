@@ -1,5 +1,9 @@
 const db = require("../util/database");
 const Expense = require("../models/expenses");
+// GOOD BEFORE HERE
+
+const defaultYear = Number(yearMonth[0]);
+const defaultMonth = yearMonth[1];
 
 const expenseTransaction = [];
 const monthsObjForDelete = {
@@ -19,7 +23,23 @@ const monthsObjForDelete = {
 
 // getExpenses From SQL Table
 exports.getExpenses = (req, res, next) => {
-  Expense.fetchAll()
+  let cookieYear = undefined;
+  let cookieMonth = undefined;
+  let cookieUser = undefined;
+
+  cookieYear =
+    cookieYear !== "undefined"
+      ? (cookieYear = req.get("Cookie").split("=")[3].slice(0, 4))
+      : (cookieYear = defaultYear);
+
+  cookieMonth =
+    cookieMonth !== "undefined"
+      ? (cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3))
+      : (cookieMonth = defaultMonth);
+
+  cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+
+  Expense.fetchAll(cookieUser, cookieYear, cookieMonth)
     .then(([rows, FieldData]) => {
       const amountArray = [];
       for (let row of rows) {
@@ -39,6 +59,7 @@ exports.getExpenses = (req, res, next) => {
         expenseTotal: totalAmountArray,
         activeMonth: yearMonth[1].toUpperCase(),
         activeYear: Number(yearMonth[0]),
+        isAuthenticated: req.isLoggedIn,
         // hasTransactions: transactions.length > 0,
         // date: null,
         // category: null,
@@ -62,8 +83,10 @@ exports.postExpenseTransaction = (req, res, next) => {
     expenseTransaction[2],
     expenseTransaction[3]
   );
+  // console.log(`new expense: ${JSON.stringify(newExpense)}`);
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
   newExpense
-    .save()
+    .save(cookieUser)
     .then(() => {
       // Slight delay to allow database to update before data being retrieved again for page reload
       function delayAfterDelete() {
@@ -77,6 +100,10 @@ exports.postExpenseTransaction = (req, res, next) => {
 //  POST/Removal of transaction line via Delete button
 exports.postDeleteExpense = (req, res, next) => {
   // Retrieve form data from row and place in variables
+  const cookieUser = req.get("Cookie").split("=")[1].split(";")[0];
+  const cookieYear = req.get("Cookie").split("=")[3].slice(0, 4);
+  const cookieMonth = req.get("Cookie").split("=")[4].slice(0, 3);
+
   const deleteRowDateExp = JSON.stringify(req.body.deleteRowDateFormExp);
   const deleteRowCategoryExp = JSON.stringify(
     req.body.deleteRowCategoryFormExp
@@ -102,17 +129,24 @@ exports.postDeleteExpense = (req, res, next) => {
   // Other (including Global yearMonth) variables to include in SQL DELETE Command
   const activeYear = Number(yearMonth[0]);
   const activeMonth = yearMonth[1];
-  const user = Number(1);
+  // const user = Number(1);
 
   // ConsoleLog of full SQL command
   // console.log(
   //   `DELETE FROM transactions WHERE ${user} = user_id AND 'expense' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategoryExp} = category AND ${deleteRowDescriptionExp} = description AND ${deleteRowAmountExp} = amount`
   // );
   // SQL Command to delete from SQL table
-  db.execute(
-    `DELETE FROM transactions WHERE ${user} = user_id AND 'expense' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategoryExp} = category AND ${deleteRowDescriptionExp} = description AND ${deleteRowAmountExp} = amount`
-  ).then(res.redirect("/worthie/expenses"));
 
+  if (cookieYear === undefined) {
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'expense' = trans_type AND '${activeYear}' = year AND '${activeMonth}' = month AND ${deleteRowCategoryExp} = category AND ${deleteRowDescriptionExp} = description AND ${deleteRowAmountExp} = amount`
+    ).then(res.redirect("/worthie/expenses"));
+  } else {
+    console.log("Year/Month cookies recognized for delete");
+    db.execute(
+      `DELETE FROM transactions WHERE ${cookieUser} = user_id AND 'expense' = trans_type AND '${cookieYear}' = year AND '${cookieMonth}' = month AND ${deleteRowCategoryExp} = category AND ${deleteRowDescriptionExp} = description AND ${deleteRowAmountExp} = amount`
+    ).then(res.redirect("/worthie/expenses"));
+  }
   // // Slight delay to allow database to update before data being retrieved again for page reload
   // function delayAfterDelete() {
   //   res.redirect("/expenses");
